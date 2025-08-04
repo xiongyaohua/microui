@@ -38,6 +38,7 @@
             zig.packages.${system}.master
             zls.packages.${system}.default
             sdl2-compat
+            libGL
           ];
         };
       }
