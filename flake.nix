@@ -2,18 +2,18 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    zig = {
+    zig-flake = {
       url = "github:mitchellh/zig-overlay";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
       };
     };
-    zls = {
+    zls-flake = {
       url = "github:zigtools/zls";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        zig-overlay.follows = "zig";
+        zig-overlay.follows = "zig-flake";
       };
     };
   };
@@ -23,26 +23,31 @@
       self,
       nixpkgs,
       flake-utils,
-      zig,
-      zls,
+      zig-flake,
+      zls-flake,
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        zig = zig-flake.packages.${system}.master;
+      #   zls = zls-flake.packages.${system}.zls.overrideAttrs (old: {
+      #   nativeBuildInputs = [zig];
+      # });
+        zls = zls-flake.packages.${system}.zls;
       in
-      with pkgs;
+      # with pkgs;
       {
-        devShells.default = mkShell {
+        devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
-            # zig.packages.${system}.master
-            # zls.packages.${system}.default
+            # zig
+            # zls
             pkgs.zig
             pkgs.zls
           ];
           buildInputs = [
-            sdl2-compat
-            libGL
+            pkgs.sdl2-compat
+            pkgs.libGL
           ];
         };
       }

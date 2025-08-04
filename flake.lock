@@ -37,7 +37,7 @@
     "gitignore": {
       "inputs": {
         "nixpkgs": [
-          "zls",
+          "zls-flake",
           "nixpkgs"
         ]
       },
@@ -75,8 +75,8 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
-        "zig": "zig",
-        "zls": "zls"
+        "zig-flake": "zig-flake",
+        "zls-flake": "zls-flake"
       }
     },
     "systems": {
@@ -94,7 +94,7 @@
         "type": "github"
       }
     },
-    "zig": {
+    "zig-flake": {
       "inputs": {
         "flake-compat": "flake-compat",
         "flake-utils": [
@@ -105,11 +105,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1753963984,
-        "narHash": "sha256-JPiCLZHuNk11XYYCqoLoKYIgdUu2WpNccTzl4ljycTQ=",
+        "lastModified": 1754268096,
+        "narHash": "sha256-QQlgWJSO6BI1J/IHHzi5Pu5bbye14OnqFX4iZ2h6UCI=",
         "owner": "mitchellh",
         "repo": "zig-overlay",
-        "rev": "45772b76cdb103bd300abac4a85a34518dee65a0",
+        "rev": "a2ca5e6c9aba5752bb3ff2fd55bd7ab699fdd355",
         "type": "github"
       },
       "original": {
@@ -118,14 +118,14 @@
         "type": "github"
       }
     },
-    "zls": {
+    "zls-flake": {
       "inputs": {
         "gitignore": "gitignore",
         "nixpkgs": [
           "nixpkgs"
         ],
         "zig-overlay": [
-          "zig"
+          "zig-flake"
         ]
       },
       "locked": {
