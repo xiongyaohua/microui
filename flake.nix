@@ -22,6 +22,7 @@
           devShells.default = mkShell {
             buildInputs = [
               zig.packages.${system}.master
+              sdl2-compat
             ];
           };
         }
