@@ -34,9 +34,13 @@
       with pkgs;
       {
         devShells.default = mkShell {
+          nativeBuildInputs = [
+            # zig.packages.${system}.master
+            # zls.packages.${system}.default
+            pkgs.zig
+            pkgs.zls
+          ];
           buildInputs = [
-            zig.packages.${system}.master
-            zls.packages.${system}.default
             sdl2-compat
             libGL
           ];
