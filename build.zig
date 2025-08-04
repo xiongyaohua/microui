@@ -41,6 +41,36 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
+    const mod_microui = b.addModule("microui", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    mod_microui.addCSourceFile(.{ .file = b.path("src/microui.c"), .flags = &.{ "-Wall", "-std=c11", "-pedantic" } });
+
+    const microui = b.addLibrary(.{ .name = "microui", .linkage = .static, .root_module = mod_microui });
+
+    microui.addIncludePath(b.path("src"));
+
+    microui.linkLibC();
+    // microui.linkSystemLibrary("GL");
+    b.installArtifact(microui);
+
+    const exe_demo = b.addExecutable(.{ .name = "microui-demo", .root_module = b.createModule(.{
+        .target = target,
+        .optimize = optimize,
+    }) });
+    exe_demo.addCSourceFiles(.{ .files = &.{ "demo/main.c", "demo/renderer.c" }, .flags = &.{ "-Wall", "-std=c11", "-pedantic" } });
+    exe_demo.addIncludePath(b.path("src"));
+    exe_demo.addIncludePath(.{ .cwd_relative = "/nix/store/m4i85qfqk49sv7g5z2kxwmwszyb6gvzc-sdl2-compat-2.32.56-dev/include" });
+    // Why the build system find library without specify directory? But not for header files.
+    //exe_demo.addLibraryPath(.{ .cwd_relative = "/nix/store/m4i85qfqk49sv7g5z2kxwmwszyb6gvzc-sdl2-compat-2.32.56-dev/lib" });
+    exe_demo.linkLibrary(microui);
+    exe_demo.linkSystemLibrary("SDL2");
+    exe_demo.linkSystemLibrary("GL");
+    exe_demo.linkSystemLibrary("m");
+    b.installArtifact(exe_demo);
+
     // Here we define an executable. An executable needs to have a root module
     // which needs to expose a `main` function. While we could add a main function
     // to the module defined above, it's sometimes preferable to split business
