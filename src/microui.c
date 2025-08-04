@@ -427,6 +427,7 @@ void mu_input_text(mu_Context *ctx, const char *text) {
 mu_Command* mu_push_command(mu_Context *ctx, int type, int size) {
   mu_Command *cmd = (mu_Command*) (ctx->command_list.items + ctx->command_list.idx);
   expect(ctx->command_list.idx + size < MU_COMMANDLIST_SIZE);
+  // TODO: Crash here in zig debug build, but works fine in release build. Investigate.
   cmd->base.type = type;
   cmd->base.size = size;
   ctx->command_list.idx += size;

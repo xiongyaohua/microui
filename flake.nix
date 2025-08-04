@@ -44,6 +44,7 @@
             # zls
             pkgs.zig
             pkgs.zls
+            pkgs.lldb
           ];
           buildInputs = [
             pkgs.sdl2-compat
