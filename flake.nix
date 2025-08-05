@@ -10,7 +10,7 @@
       };
     };
     zls-flake = {
-      url = "github:zigtools/zls";
+      url = "github:zigtools/zls/master";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         zig-overlay.follows = "zig-flake";
@@ -34,7 +34,7 @@
         zls = zls-flake.packages.${system}.zls.overrideAttrs (old: {
           nativeBuildInputs = [zig];
           # checkPhase = '''';
-          doCheck = false;
+          # doCheck = false;
         });
         # zls = zls-flake.packages.${system}.zls;
       in
@@ -42,11 +42,12 @@
       {
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
-            zig
-            zls
-            # pkgs.zig
-            # pkgs.zls
+            # zig
+            # zls
+            pkgs.zig
+            pkgs.zls
             pkgs.lldb
+            pkgs.pkg-config
           ];
           buildInputs = [
             pkgs.sdl2-compat

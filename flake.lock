@@ -138,6 +138,7 @@
       },
       "original": {
         "owner": "zigtools",
+        "ref": "master",
         "repo": "zls",
         "type": "github"
       }
