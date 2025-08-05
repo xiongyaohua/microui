@@ -31,19 +31,21 @@
       let
         pkgs = import nixpkgs { inherit system; };
         zig = zig-flake.packages.${system}.master;
-      #   zls = zls-flake.packages.${system}.zls.overrideAttrs (old: {
-      #   nativeBuildInputs = [zig];
-      # });
-        zls = zls-flake.packages.${system}.zls;
+        zls = zls-flake.packages.${system}.zls.overrideAttrs (old: {
+          nativeBuildInputs = [zig];
+          # checkPhase = '''';
+          doCheck = false;
+        });
+        # zls = zls-flake.packages.${system}.zls;
       in
       # with pkgs;
       {
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
-            # zig
-            # zls
-            pkgs.zig
-            pkgs.zls
+            zig
+            zls
+            # pkgs.zig
+            # pkgs.zls
             pkgs.lldb
           ];
           buildInputs = [
