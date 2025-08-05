@@ -41,10 +41,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
     });
 
-    const mod_microui = b.addModule("microui", .{
-        .target = target,
-        .optimize = optimize,
-    });
+    const mod_microui = b.addModule("microui", .{ .target = target, .optimize = optimize, .root_source_file = b.path("src/microui.zig") });
 
     mod_microui.addCSourceFile(.{ .file = b.path("src/microui.c"), .flags = &.{ "-Wall", "-std=c11", "-pedantic" } });
 

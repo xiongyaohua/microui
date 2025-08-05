@@ -119,7 +119,7 @@ typedef struct { mu_Id id; int last_update; } mu_PoolItem;
 typedef struct { int type, size; } mu_BaseCommand;
 typedef struct { mu_BaseCommand base; void *dst; } mu_JumpCommand;
 typedef struct { mu_BaseCommand base; mu_Rect rect; } mu_ClipCommand;
-typedef struct { mu_BaseCommand base; mu_Rect rect; mu_Color color; } mu_RectCommand;
+typedef struct { mu_BaseCommand base; mu_Rect rect; mu_Color color; int padding; } mu_RectCommand; // Add padding so that the size is multiple of 8.
 typedef struct { mu_BaseCommand base; mu_Font font; mu_Vec2 pos; mu_Color color; char str[1]; } mu_TextCommand;
 typedef struct { mu_BaseCommand base; mu_Rect rect; int id; mu_Color color; } mu_IconCommand;
 
@@ -190,7 +190,12 @@ struct mu_Context {
   char number_edit_buf[MU_MAX_FMT];
   mu_Id number_edit;
   /* stacks */
-  mu_stack(char, MU_COMMANDLIST_SIZE) command_list;
+
+  struct {
+      int idx;
+      _Alignas(8) char items[MU_COMMANDLIST_SIZE]; // Must be 8 aligned.
+  } command_list;
+
   mu_stack(mu_Container*, MU_ROOTLIST_SIZE) root_list;
   mu_stack(mu_Container*, MU_CONTAINERSTACK_SIZE) container_stack;
   mu_stack(mu_Rect, MU_CLIPSTACK_SIZE) clip_stack;

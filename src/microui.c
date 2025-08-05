@@ -423,31 +423,7 @@ void mu_input_text(mu_Context *ctx, const char *text) {
 /*============================================================================
 ** commandlist
 **============================================================================*/
-
-mu_Command* mu_push_command(mu_Context *ctx, int type, int size) {
-  mu_Command *cmd = (mu_Command*) (ctx->command_list.items + ctx->command_list.idx);
-  expect(ctx->command_list.idx + size < MU_COMMANDLIST_SIZE);
-  // TODO: Crash here in zig debug build, but works fine in release build. Investigate.
-  cmd->base.type = type;
-  cmd->base.size = size;
-  ctx->command_list.idx += size;
-  return cmd;
-}
-
-
-int mu_next_command(mu_Context *ctx, mu_Command **cmd) {
-  if (*cmd) {
-    *cmd = (mu_Command*) (((char*) *cmd) + (*cmd)->base.size);
-  } else {
-    *cmd = (mu_Command*) ctx->command_list.items;
-  }
-  while ((char*) *cmd != ctx->command_list.items + ctx->command_list.idx) {
-    if ((*cmd)->type != MU_COMMAND_JUMP) { return 1; }
-    *cmd = (*cmd)->jump.dst;
-  }
-  return 0;
-}
-
+// `mu_push_command` and `mu_next_command` ziggified.
 
 static mu_Command* push_jump(mu_Context *ctx, mu_Command *dst) {
   mu_Command *cmd;
@@ -494,7 +470,8 @@ void mu_draw_text(mu_Context *ctx, mu_Font font, const char *str, int len,
   if (clipped == MU_CLIP_PART) { mu_set_clip(ctx, mu_get_clip_rect(ctx)); }
   /* add command */
   if (len < 0) { len = strlen(str); }
-  cmd = mu_push_command(ctx, MU_COMMAND_TEXT, sizeof(mu_TextCommand) + len);
+  int mem_len = ((len + 7) / 8) * 8; // Make sure command is 8 aligned
+  cmd = mu_push_command(ctx, MU_COMMAND_TEXT, sizeof(mu_TextCommand) + mem_len);
   memcpy(cmd->text.str, str, len);
   cmd->text.str[len] = '\0';
   cmd->text.pos = pos;
