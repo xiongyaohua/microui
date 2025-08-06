@@ -58,14 +58,9 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     }) });
     exe_demo.addCSourceFiles(.{ .files = &.{ "demo/main.c", "demo/renderer.c" }, .flags = &.{ "-Wall", "-std=c11", "-pedantic" } });
-    exe_demo.root_module.addCMacro("_GNU_SOURCE", "1");
-    exe_demo.root_module.addCMacro("_REENTRANT", "");
     exe_demo.addIncludePath(b.path("src"));
-    exe_demo.addIncludePath(.{ .cwd_relative = "/nix/store/m4i85qfqk49sv7g5z2kxwmwszyb6gvzc-sdl2-compat-2.32.56-dev/include" });
-    // Why the build system find library without specify directory? But not for header files.
-    //exe_demo.addLibraryPath(.{ .cwd_relative = "/nix/store/m4i85qfqk49sv7g5z2kxwmwszyb6gvzc-sdl2-compat-2.32.56-dev/lib" });
     exe_demo.linkLibrary(microui);
-    exe_demo.linkSystemLibrary("SDL2");
+    exe_demo.linkSystemLibrary("SDL2"); // If pkg-config is in environment, it will be used to resolve system library.
     exe_demo.linkSystemLibrary("GL");
     exe_demo.linkLibC();
     b.installArtifact(exe_demo);

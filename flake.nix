@@ -51,7 +51,7 @@
           ];
           buildInputs = [
             pkgs.sdl2-compat
-            pkgs.raylib
+            # pkgs.raylib
             pkgs.libGL
           ];
         };
