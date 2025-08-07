@@ -61,7 +61,17 @@ pub fn build(b: *std.Build) void {
     exe_demo.addIncludePath(b.path("src"));
     exe_demo.linkLibrary(microui);
     exe_demo.linkSystemLibrary("SDL2"); // If pkg-config is in environment, it will be used to resolve system library.
-    exe_demo.linkSystemLibrary("GL");
+
+    switch (target.result.os.tag) {
+        .macos => {
+            // exe_demo.addFrameworkPath(.{ .cwd_relative = "/System/Library/Frameworks" });
+            exe_demo.addFrameworkPath(.{ .cwd_relative = "/nix/store/hjmg118wbm4fkdinkxvvvd9y6m2rbf5a-apple-sdk-11.3/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks" });
+            exe_demo.linkFramework("OpenGL");
+        },
+        else => {
+            exe_demo.linkSystemLibrary("GL");
+        },
+    }
     exe_demo.linkLibC();
     b.installArtifact(exe_demo);
 
