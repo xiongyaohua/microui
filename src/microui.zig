@@ -10,7 +10,7 @@ const FnTextHeight = fn (c.mu_Font) callconv(.c) c_int;
 const FnDrawFrame = fn (*c.mu_Context, c.mu_Rect, c_int) callconv(.c) void;
 
 comptime {
-    _ = patch{}; // So that patch is evaluated and functions are exported.
+    _ = patch; // So that patch is evaluated and functions are exported.
 }
 
 const patch = struct {
