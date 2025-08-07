@@ -16,13 +16,15 @@ static int height = 600;
 static int buf_idx;
 
 static SDL_Window *window;
-
+static SDL_Renderer *renderer;
 
 void r_init(void) {
   /* init SDL window */
   window = SDL_CreateWindow(
     NULL, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     width, height, SDL_WINDOW_OPENGL);
+  // renderer = SDL_CreateRenderer (window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
   SDL_GL_CreateContext(window);
 
   /* init gl */
@@ -180,6 +182,8 @@ void r_clear(mu_Color clr) {
 
 
 void r_present(void) {
+  // SDL_RenderPresent(renderer);
   flush();
   SDL_GL_SwapWindow(window);
+  SDL_Delay(17);
 }
