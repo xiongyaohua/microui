@@ -55,7 +55,7 @@ const Context = struct {
     inner: c.mu_Context,
 
     const Self = @This();
-    pub fn init(text_width: *const FnTextHeight, text_height: *const FnTextHeight, draw_frame: ?*const FnDrawFrame) Self {
+    pub fn init(text_width: *const FnTextWidth, text_height: *const FnTextHeight, draw_frame: ?*const FnDrawFrame) Self {
         var self: Self = undefined;
         c.mu_init(&self.inner);
         self.inner.text_width = text_width;
