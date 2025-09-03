@@ -1,0 +1,8 @@
+# Fragment common to C and C++ source files
+CompileFlags:
+    Add:
+        - -I../src/
+        #- "-D"
+        #- "SOME_MACRO_TO_DEFINE"
+        #- "-include"
+        #- "some/file/to/force/inclusion/of.h"
